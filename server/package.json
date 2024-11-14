@@ -1,0 +1,23 @@
+{
+  "engines": {
+    "node": ">=20.6.0"
+  },
+  "name": "makers-tech-chat",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc",
+    "dev": "node --env-file=.env --watch -r ts-node/register src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC",
+  "author": "CtrlProgrammer",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
