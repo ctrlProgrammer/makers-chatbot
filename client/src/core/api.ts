@@ -1,5 +1,5 @@
 export class APIHelper {
-  static readonly HOST = "http://localhost:3195";
+  static readonly HOST = "https://makers-api.businessbuilders.city";
 
   static async GET(url: string) {
     const request = await fetch(APIHelper.HOST + url);
