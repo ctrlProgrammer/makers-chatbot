@@ -109,7 +109,13 @@ export class LexRoutes extends Router {
         for (let i = 0; i < data.messages.length; i++) {
           if (data.messages[i].content == "@@inventory@@") {
             const inventory = await this.getInventoryFromDatabase();
-            data.messages[i].content = Utils.ParseInventory(inventory as any[]);
+
+            data.messages[i] = {
+              content: Utils.ParseInventory(inventory as any[]),
+              extra: inventory,
+              special: true,
+              type: "inventory",
+            } as any;
           } else if (data.messages[i].content?.includes("@@device@@")) {
             const searchedDevice = data.messages[i].content?.replace("@@device@@ ", "");
 
@@ -117,7 +123,7 @@ export class LexRoutes extends Router {
               const deviceSearch = await this.GetDeviceFromDatabase(searchedDevice);
 
               if (deviceSearch && Array.isArray(deviceSearch) && deviceSearch[0]) {
-                data.messages[i].content = Utils.ParseDevice(deviceSearch[0]);
+                data.messages[i] = { content: Utils.ParseDevice(deviceSearch[0]), extra: deviceSearch[0], special: true, type: "device" } as any;
               } else {
                 data.messages[i].content = "No pudimos encontrar el dispositivo. Intenta con otro.";
               }
