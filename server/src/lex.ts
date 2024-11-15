@@ -2,7 +2,9 @@ import Express from "express";
 import { LexRuntimeV2Client, RecognizeTextCommand, RecognizeTextCommandInput } from "@aws-sdk/client-lex-runtime-v2";
 import { fromEnv } from "@aws-sdk/credential-providers";
 
-const BOT_NAME = "StoreInventoryManager";
+const BOT_ID = "2098HGEBIJ";
+const BOT_ALIAS = "3LVER1CIMH";
+const BOT_LOCALE = "es_419";
 
 export class Router {
   protected app: Express.Application;
@@ -32,7 +34,7 @@ export class LexRoutes extends Router {
 
   private createRoutes() {
     this.app.get("/state", (req, res) => this.getState(req, res));
-    this.app.get("/test", (req, res) => this.receiveMessage(req, res));
+    this.app.post("/send", (req, res) => this.receiveMessage(req, res));
   }
 
   private getState(_: Express.Request, res: Express.Response) {
@@ -43,11 +45,14 @@ export class LexRoutes extends Router {
   }
 
   private async receiveMessage(req: Express.Request, res: Express.Response) {
+    // Parse text and create session
+    const userInput = req.body.message;
+
     const lexParams: RecognizeTextCommandInput = {
-      botId: "2098HGEBIJ",
-      botAliasId: "3LVER1CIMH",
-      text: "Hola",
-      localeId: "es_419",
+      botId: BOT_ID,
+      botAliasId: BOT_ALIAS,
+      text: userInput,
+      localeId: BOT_LOCALE,
       sessionId: "test_session_1",
     };
 
