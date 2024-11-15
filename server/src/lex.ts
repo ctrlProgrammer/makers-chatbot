@@ -59,8 +59,10 @@ export class LexRoutes extends Router {
     try {
       const data = await this.lexClient.send(new RecognizeTextCommand(lexParams));
       console.log(data);
+      res.json({ error: false, messages: data.messages });
     } catch (error) {
       console.log(error);
+      res.json({ error: true });
     }
   }
 }
