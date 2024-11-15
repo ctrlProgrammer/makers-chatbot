@@ -15,6 +15,8 @@
     Además, no solo nos limitamos a crear un chat con los clientes; también ofrecemos servicios personalizados para mostrar el inventario directamente en el chat, mejorando la experiencia del usuario y haciendo que nuestro chatbot sea el más fácil, el más interactivo y el más eficiente para todos nuestros clientes.
 </p>
 
+<h3>English</h3>
+
 <p align="left">
     Any company that wants to save on customer service and improve interaction with clients needs our product. We save nearly 10 times the cost for every 10k interactions with users, which means all businesses could reduce their workload in the customer service area. 
 </p>
