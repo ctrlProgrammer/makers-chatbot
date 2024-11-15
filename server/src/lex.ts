@@ -3,6 +3,7 @@ import { LexRuntimeV2Client, RecognizeTextCommand, RecognizeTextCommandInput } f
 import { fromEnv } from "@aws-sdk/credential-providers";
 import { Database, OPEN_READWRITE } from "sqlite3";
 import { ADD_INVENTORY, CREATE_INVENTORY_TABLE, GET_ALL_INVENTORY } from "./database";
+import { Utils } from "./utils";
 
 const BOT_ID = "2098HGEBIJ";
 const BOT_ALIAS = "TSTALIASID";
@@ -108,7 +109,7 @@ export class LexRoutes extends Router {
         for (let i = 0; i < data.messages.length; i++) {
           if (data.messages[i].content == "@@inventory@@") {
             const inventory = await this.getInventoryFromDatabase();
-            data.messages[i].content = this.parseInventory(inventory as any[]);
+            data.messages[i].content = Utils.ParseInventory(inventory as any[]);
           }
         }
       }
@@ -143,22 +144,5 @@ export class LexRoutes extends Router {
         else res(rows);
       });
     });
-  }
-
-  // Parse actions
-
-  private parseInventory(inventory: any[]) {
-    let text = "";
-
-    for (let i = 0; i < inventory.length; i++) {
-      text += "---------------------------------------\n";
-      text += "Nombre: " + inventory[i].item_name + "\n";
-      text += "Marca: " + inventory[i].item_brand + "\n";
-      text += "Inventario: " + inventory[i].item_balance + "\n";
-      text += "Precio: " + inventory[i].item_price + "\n";
-      text += "---------------------------------------\n";
-    }
-
-    return text;
   }
 }
