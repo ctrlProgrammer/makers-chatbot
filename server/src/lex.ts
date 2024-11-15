@@ -5,7 +5,7 @@ import { Database, OPEN_READWRITE } from "sqlite3";
 import { ADD_INVENTORY, CREATE_INVENTORY_TABLE, GET_ALL_INVENTORY } from "./database";
 
 const BOT_ID = "2098HGEBIJ";
-const BOT_ALIAS = "3LVER1CIMH";
+const BOT_ALIAS = "TSTALIASID";
 const BOT_LOCALE = "es_419";
 
 export class Router {
@@ -98,11 +98,21 @@ export class LexRoutes extends Router {
       botAliasId: BOT_ALIAS,
       text: userInput,
       localeId: BOT_LOCALE,
-      sessionId: "test_session_1",
+      sessionId: "test_session_" + req.body.username,
     };
 
     try {
       const data = await this.lexClient.send(new RecognizeTextCommand(lexParams));
+
+      if (data && data.messages && Array.isArray(data.messages)) {
+        for (let i = 0; i < data.messages.length; i++) {
+          if (data.messages[i].content == "@@inventory@@") {
+            const inventory = await this.getInventoryFromDatabase();
+            data.messages[i].content = this.parseInventory(inventory as any[]);
+          }
+        }
+      }
+
       console.log(data);
       res.json({ error: false, messages: data.messages });
     } catch (error) {
@@ -113,16 +123,42 @@ export class LexRoutes extends Router {
 
   private async getInventory(_: Express.Request, res: Express.Response) {
     if (this.database) {
-      this.database?.all(GET_ALL_INVENTORY, [], (err, rows) => {
-        if (err) {
-          console.log(err);
+      this.getInventoryFromDatabase().then((value) => {
+        if (value == null) {
           res.json({ error: true });
           return;
         }
 
-        console.log(rows);
-        res.json({ error: false, data: rows });
+        res.json(value);
       });
     } else res.json({ error: true });
+  }
+
+  // Database actions
+
+  private async getInventoryFromDatabase() {
+    return new Promise((res) => {
+      this.database?.all(GET_ALL_INVENTORY, [], (err, rows) => {
+        if (err) res(null);
+        else res(rows);
+      });
+    });
+  }
+
+  // Parse actions
+
+  private parseInventory(inventory: any[]) {
+    let text = "";
+
+    for (let i = 0; i < inventory.length; i++) {
+      text += "---------------------------------------\n";
+      text += "Nombre: " + inventory[i].item_name + "\n";
+      text += "Marca: " + inventory[i].item_brand + "\n";
+      text += "Inventario: " + inventory[i].item_balance + "\n";
+      text += "Precio: " + inventory[i].item_price + "\n";
+      text += "---------------------------------------\n";
+    }
+
+    return text;
   }
 }
