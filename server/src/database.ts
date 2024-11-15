@@ -15,3 +15,4 @@ export const ADD_INVENTORY = `insert into inventory (inventory_id, item_brand, i
                 (5, 'ACER', 'Predator Triton 500', 12, 'https://http2.mlstatic.com/D_Q_NP_982037-MLU78562525106_082024-AC.webp', 8000000);`;
 
 export const GET_ALL_INVENTORY = `SELECT * FROM inventory;`;
+export const GET_ONE_FROM_INVENTORY = `SELECT * FROM  inventory WHERE inventory_id = ? or item_name = ? or item_brand = ?;`;

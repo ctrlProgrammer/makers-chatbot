@@ -2,7 +2,7 @@ import Express from "express";
 import { LexRuntimeV2Client, RecognizeTextCommand, RecognizeTextCommandInput } from "@aws-sdk/client-lex-runtime-v2";
 import { fromEnv } from "@aws-sdk/credential-providers";
 import { Database, OPEN_READWRITE } from "sqlite3";
-import { ADD_INVENTORY, CREATE_INVENTORY_TABLE, GET_ALL_INVENTORY } from "./database";
+import { ADD_INVENTORY, CREATE_INVENTORY_TABLE, GET_ALL_INVENTORY, GET_ONE_FROM_INVENTORY } from "./database";
 import { Utils } from "./utils";
 
 const BOT_ID = "2098HGEBIJ";
@@ -110,11 +110,24 @@ export class LexRoutes extends Router {
           if (data.messages[i].content == "@@inventory@@") {
             const inventory = await this.getInventoryFromDatabase();
             data.messages[i].content = Utils.ParseInventory(inventory as any[]);
+          } else if (data.messages[i].content?.includes("@@device@@")) {
+            const searchedDevice = data.messages[i].content?.replace("@@device@@ ", "");
+
+            if (searchedDevice) {
+              const deviceSearch = await this.GetDeviceFromDatabase(searchedDevice);
+
+              if (deviceSearch && Array.isArray(deviceSearch) && deviceSearch[0]) {
+                data.messages[i].content = Utils.ParseDevice(deviceSearch[0]);
+              } else {
+                data.messages[i].content = "No pudimos encontrar el dispositivo. Intenta con otro.";
+              }
+            } else {
+              data.messages[i].content = "No pudimos encontrar el dispositivo. Intenta con otro.";
+            }
           }
         }
       }
 
-      console.log(data);
       res.json({ error: false, messages: data.messages });
     } catch (error) {
       console.log(error);
@@ -140,6 +153,15 @@ export class LexRoutes extends Router {
   private async getInventoryFromDatabase() {
     return new Promise((res) => {
       this.database?.all(GET_ALL_INVENTORY, [], (err, rows) => {
+        if (err) res(null);
+        else res(rows);
+      });
+    });
+  }
+
+  private async GetDeviceFromDatabase(deviceId: string) {
+    return new Promise((res) => {
+      this.database?.all(GET_ONE_FROM_INVENTORY, [deviceId, deviceId, deviceId], (err, rows) => {
         if (err) res(null);
         else res(rows);
       });
