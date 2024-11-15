@@ -8,3 +8,11 @@ export interface InventoryItem {
 }
 
 export type Inventory = InventoryItem[];
+
+export interface Message {
+  from: string;
+  content: string;
+  type?: string;
+  extra?: any;
+  special?: boolean;
+}

@@ -1,0 +1,123 @@
+.chat {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.chat > .conversation {
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+  overflow-y: scroll;
+  min-height: 600px;
+}
+
+.chat > .conversation > .message {
+  background: white;
+  width: 70%;
+  margin-bottom: 7px;
+  font-size: 12px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-right: 10px;
+  padding-left: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.chat > .conversation > .message.fromChat {
+  background: rgb(169, 207, 240);
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  margin-right: auto;
+  text-align: left;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.chat > .conversation > .message.fromUser {
+  background: rgba(169, 232, 169, 0.653);
+  margin-left: auto;
+  text-align: right;
+}
+
+.inventory {
+  margin-top: 10px;
+}
+
+.device {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 10px;
+  display: flex;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  background: white;
+}
+
+.device > img {
+  width: 40%;
+  border-right: 1px solid grey;
+}
+
+.device > .data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: 7px;
+}
+
+.message {
+  display: flex;
+}
+
+.message > .messageText {
+  flex: 0 0 90%;
+  max-width: 90%;
+  display: flex;
+  height: 40px;
+}
+
+.message > .messageText > textarea {
+  flex: 0 0 85%;
+  max-width: 85%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.message > .messageText > button {
+  height: 100%;
+  flex: 0 0 15%;
+  max-width: 1150%;
+  border: 0;
+  background: rgb(157, 228, 157);
+  cursor: pointer;
+}
+
+.message > .messageText > button:hover {
+  background: rgb(108, 165, 108);
+}
+
+.message > .restartSession {
+  flex: 0 0 10%;
+  max-width: 10%;
+}
+
+.message > .restartSession > button {
+  width: 100%;
+  cursor: pointer;
+  height: 100%;
+  border: none;
+  background: black;
+  color: white;
+  font-size: 25px;
+}
+
+.message > .restartSession > button:hover {
+  background: rgb(23, 23, 23);
+}

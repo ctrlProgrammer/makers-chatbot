@@ -1,5 +1,5 @@
 export class APIHelper {
-  static readonly HOST = "http://localhost:3000";
+  static readonly HOST = "http://localhost:3195";
 
   static async GET(url: string) {
     const request = await fetch(APIHelper.HOST + url);
@@ -11,6 +11,7 @@ export class APIHelper {
       headers: {
         "Content-Type": "application/json",
       },
+      method: "POST",
       body: JSON.stringify(data),
     });
 
