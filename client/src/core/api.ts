@@ -20,4 +20,8 @@ export class APIHelper {
   static async GetInventory() {
     return await APIHelper.GET("/inventory");
   }
+
+  static async SendMessage(message: string, session: number) {
+    return await APIHelper.POST("/send", { message, username: session });
+  }
 }
